@@ -1,0 +1,133 @@
+# -*- coding:utf-8 -*-
+import random,string
+from hashlib import md5
+
+class MyStr():
+    @classmethod
+    def getRandomPsw(cls, length=6):
+        src = string.ascii_letters + string.digits
+        if length < 6:
+            length = 6
+        list_passwd_all = random.sample(src, length - 3) #从字母和数字中随机取3位
+        list_passwd_all.extend(random.sample(string.digits, 1))  #让密码中一定包含数字
+        list_passwd_all.extend(random.sample(string.ascii_lowercase, 1)) #让密码中一定包含小写字母
+        list_passwd_all.extend(random.sample(string.ascii_uppercase, 1)) #让密码中一定包含大写字母
+        random.shuffle(list_passwd_all) #打乱列表顺序
+    
+    @classmethod
+    def getFileMd5(cls, name):
+        m = md5()
+        a_file = open(name, 'rb')    #需要使用二进制格式读取文件内容
+        m.update(a_file.read())
+        a_file.close()
+        return m.hexdigest()
+    
+    @classmethod
+    def getMd5(cls, instr, length=32):
+        m = md5()
+        m.update(instr)
+        res = m.hexdigest()
+        if length < 32:
+            res = random.sample(res, length) #从字母和数字中随机取3位
+        return res
+        
+class FileManager(object):
+    #写一个写入数据的接口  
+    @classmethod  
+    def write(cls, filename, content, split='\n'):  
+        ''''' 
+        :param content: 要写入的数据 
+        :param split: 每条数据之间的分隔符 
+        :return: 
+        '''  
+        # 判断传入的参数是否字符串类型，如果是，写入 . 如果不是,抛出异常
+        if isinstance(content, str):  
+            #1.打开文件  
+            f = open(filename,'a')  
+            #2.写入数据  
+            f.write(content)  
+            f.write(split)  
+            #3.关闭文件  
+            f.close()  
+        else:  
+            raise TypeError('content must be a str!') 
+        
+    #写入多行数据  
+    @classmethod  
+    def writeline(cls, filename, str_list, split='\n'):  
+        #判断某个对象是否是某个类型，若是，返回True;否则，返回False  
+        rs = isinstance(str_list, list)  
+        #如果为True  
+        if rs:  
+            #for循环遍历列表，取出每一数据，判断数据类型是否为字符串  
+            for content in str_list:  
+                #如果不是字符串类型  
+                if isinstance(content,str) == False:  
+                    #抛出异常  
+                    raise TypeError('str_list must be a list of "str",ex:["str1","str2"...]')  
+            #如果没有异常，就可以写入数据了  
+            #1.打开文件  
+            f = open(filename,'a')  
+            #2.写入数据 str1\nstr2\nstr3...  
+            string = split.join(str_list)  
+            f.write(string)  
+            #3.关闭文件  
+            f.close()  
+        else:  
+            #如果传入的不是列表，抛出异常  
+            raise TypeError('str_list must be a list of "str",ex:["str1","str2"...]')  
+        
+class DateTool(object):  
+    #日期格式化工具类，用类执行一个函数，返回一个对象，对象分别有year\month\day
+    '''
+    2018-2-1\ 2018.2.1\ 2018 2 1 
+    date.year = 2018 
+    date.month = 2 
+    date.day = 1 
+    '''     
+    #初始化函数  
+    def __init__(self,year=1970,month=1,day=1):  
+        self.year = year  
+        self.month = month  
+        self.day = day  
+    #类函数，传递进来一个日期，返回一个该类的对象  
+    @classmethod  
+    def get_date(cls,date):  
+        #判断date是否为str类型  
+        if not isinstance(date,str):  
+            #不是str类型，直接触发异常  
+            raise TypeError('date must be a str!')  
+        #转换  
+        #判断是-还是.还是空格  
+        if '-' in date:  
+            #分别将2018赋值year 2赋值给month 1赋值给day
+            # year, month, day = [2018,2,1]  
+            year,month,day = list(map(int,date.split('-')))  
+        elif '.' in date:  
+            year,month,day = list(map(int,date.split('.')))  
+        elif ' ' in date:  
+            year,month,day = list(map(int,date.split(' ')))  
+         #创建对象  
+        # obj = DateTool(year,month,day)  
+        obj = cls(year,month,day)  
+        #返回对象  
+        return obj 
+
+def main():
+    # 指定写入文件的名称  
+    filename = 'all_student.txt'  
+    # 执行写入功能函数  
+    FileManager.write(filename,'hello')
+    FileManager.write(filename,'world')  
+    FileManager.writeline(filename,['hello', 'world','zhangzhang'])  
+    
+    # 开始进行日期转换  
+    # 转换之后 返回一个结果对象  
+    date = DateTool.get_date('2020 2 22')  
+    #date有三个属性 分别为year，month，day  
+    print(date.year)  
+    print(date.month)  
+    print(date.day)
+
+if __name__ == '__main__':
+    main()
