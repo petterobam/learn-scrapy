@@ -7,17 +7,30 @@ from BaseTools.MyDownload import request
 class mzitu():
     def __init__(self):
         self.headers = {'User-Agent': "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"}
-        self.currPath = "./mzitu-no-es/"
+        self.basePath = "./mzitu-no-es/"
+        self.currPath = self.basePath
+        self.mkdir(self.basePath)
+        self.totalFinishPath = "./mzitu-no-es/totalPage.txt"
+        self.totalFinish = self.getTotalFinish()
+
     def all_url(self, url):
         html = self.request(url)##调用request函数把套图地址传进去会返回给我们一个response
         all_a = BeautifulSoup(html.text, 'lxml').find('div', class_='all').find('ul', class_="archives").find_all('a')
+        count = 0
         for a in all_a:
+            count = count + 1
+            if count > self.totalFinish:
+                self.overwriteTotalFinish(count)
+            else:
+                print("第", count, "页已经抓取过，跳过！")
+                continue
             title = a.get_text()
             href = a['href']
             print(title, href)  ##加点提示不然太枯燥了
             #path = str(title).replace("?", '_') ##我注意到有个标题带有 ？  这个符号Windows系统是不能创建文件夹的所以要替换掉
             self.mkdir(title) ##调用mkdir函数创建文件夹！这儿path代表的是标题title哦！！！！！不要糊涂了哦！
             self.html(href) ##调用html函数把href参数传递过去！href是啥还记的吧？ 就是套图的地址哦！！不要迷糊了哦！
+            self.totalFinish = count
 
     def html(self, href):   ##这个函数是处理套图地址获得图片的页面地址
         try:
@@ -58,11 +71,11 @@ class mzitu():
             path = path[index + 1:]
         else:
             path = path.strip()
-        isExists = os.path.exists(os.path.join("./mzitu-no-es", path))
+        self.currPath = os.path.join(self.basePath, path)
+        isExists = os.path.exists(self.currPath)
         if not isExists:
             print('建了一个名字叫做', path, '的文件夹！')
-            os.makedirs(os.path.join("./mzitu-no-es/", path))
-            self.currPath =  "./mzitu-no-es/" + path + "/"
+            os.makedirs(self.currPath)
             #os.chdir(os.path.join("./mzitu", path)) ##切换到目录
             return True
         else:
@@ -73,6 +86,18 @@ class mzitu():
     def request(self, url): ##这个函数获取网页的response 然后返回
         content = request.get(url, headers=self.headers, timeout=3)
         return content
+
+    def getTotalFinish(self):
+        isExists = os.path.exists(self.totalFinishPath)
+        if isExists:
+            with open(self.totalFinishPath, 'r', encoding='UTF-8') as f:
+                return int(f.read())
+        else:
+            return 0
+
+    def overwriteTotalFinish(self, count):
+        with open(self.totalFinishPath, 'w', encoding='UTF-8') as f:
+            f.write(str(count))
 
 USE_ONE_DIR = True
 USE_DEF_DIR = False
