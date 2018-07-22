@@ -3,7 +3,7 @@ import Parent
 from bs4 import BeautifulSoup
 import os
 import re
-from BaseTools.MyUtil import FileManager
+# from BaseTools.MyUtil import FileTool
 from BaseTools.MyDownload import request
 import csv
 ## http://vacations.ctrip.com/visa/lsg
@@ -56,7 +56,7 @@ class VisaLqxxCrawler():
                 lsgInfo["lsggzsj"] = self.trim(ps[2].get_text())
                 print(lsgInfo)
                 self.lsgxxList.append(lsgInfo)
-                # FileManager.write(self.lsgxxFilePath,lsgInfo.encode("utf-8"))
+                # FileTool.write(self.lsgxxFilePath,lsgInfo.encode("utf-8"))
         except Exception as e:
             print('发生了异常：', e)
 
