@@ -2,6 +2,7 @@
 import random,string
 from hashlib import md5
 import os
+import codecs
 
 class MyStr():
     @classmethod
@@ -41,10 +42,12 @@ class FileTool(object):
         :param split: 每条数据之间的分隔符 
         :return: 
         '''
+        if content == None:
+            return
         # 判断传入的参数是否字符串类型，如果是，写入 . 如果不是,抛出异常
         if isinstance(content, str):
             #1.打开文件
-            f = open(filename,'a')
+            f = codecs.open(filename, 'a', 'utf-8')
             #2.写入数据
             f.write(content)
             f.write(split)
@@ -102,6 +105,11 @@ class FileTool(object):
     def overwrite(cls, path, text):
         with open(path, 'w', encoding='UTF-8') as f:
             f.write(text)
+
+    # 判断文件是否存在
+    @classmethod
+    def isExit(cls, path):
+        return os.path.exists(path)
 
 
 class DateTool(object):
