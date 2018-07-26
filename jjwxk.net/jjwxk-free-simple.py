@@ -3,9 +3,18 @@ import Parent
 from bs4 import BeautifulSoup
 from BaseTools.MyDownload import request
 from BaseTools.MyUtil import FileTool
+import time
 
 class jjwxk_free_simple():
     def __init__(self):
+        self.headers = {
+            # 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+            # 'Accept-Encoding': 'gzip, deflate',
+            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+            'Host': 'www.jjwxc.net',
+            'Upgrade-Insecure-Requests': '1',
+            'User-Agent':"Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
+        }
         self.basePath = "jjwxk_free_simple/"
         FileTool.mkdir(self.basePath)
         self.baseListFilePath = self.basePath + "book-list.txt"
@@ -29,7 +38,7 @@ class jjwxk_free_simple():
             if(self.globalPageCount > self.pageCount):
                 self.lineCount = 0
                 self.pageCount = self.globalPageCount
-            
+
             # 获取图书表格元素
             book_table = html_ele.find("table", class_="cytable")
             if book_table == None:
@@ -55,10 +64,18 @@ class jjwxk_free_simple():
                 self.lineCount = count
                 # 完成一行，记录一下count信息，便于后面断点爬取
                 self.saveFinishCountInfo()
+        else:
+            self.globalPageCount = self.pageCount - 1
 
-        page_next = "http://www.jjwxc.net/" + html_ele.find_all("div", class_="controlbar")[1].find_all("a")[2]["href"]
+        # page_next = "http://www.jjwxc.net/" + html_ele.find_all("div", class_="controlbar")[1].find_all("a")[2]["href"]
+        page_next = "http://www.jjwxc.net/bookbase_slave.php?booktype=free&opt=&endstr=&orderstr=4&page=" + str(self.globalPageCount + 1)
         if page_next == None or "" == page_next:
             return
+        print("书籍清单第", self.globalPageCount, "页信息：[", url, "]抓取完毕")
+        # 暂停一秒，防止爬虫被发现
+        # time.sleep(1)
+        self.headers['Referer'] = url
+        # 继续拉取下一页
         self.free_list(page_next)
 
     # 保存已完成的条数信息
@@ -79,7 +96,14 @@ class jjwxk_free_simple():
 
     # 获取网页html文本内容
     def request_content(self, url):
-        return request.get_utf8_content(url)
+        return request.get_utf8_content(url, headers=self.headers)
 
 jjwxk = jjwxk_free_simple()
 jjwxk.free_list()
+# while True:
+#     try:
+#         jjwxk.free_list()
+#     except Exception as e:
+#         print('except:', e)
+#     finally:
+#         print('finally...')

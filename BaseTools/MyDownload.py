@@ -61,7 +61,7 @@ class download():
                     self.iplist.append(tds[1].text + ':' + tds[2].text)
                     # print(tds[1].text + ':' + tds[2].text)
 
-    def get(self, url, headers, timeout, proxy=None, num_retries=6): ##给函数一个默认参数proxy为空
+    def get(self, url, headers, timeout, proxy=None, num_retries=10): ##给函数一个默认参数proxy为空
         UA = random.choice(self.user_agent_list) ##从self.user_agent_list中随机取出一个字符串
         headers['User-Agent'] = UA  ##构造成一个完整的User-Agent （UA代表的是上面随机取出来的字符串哦）
 
@@ -101,8 +101,8 @@ class download():
         return requests.utils.get_encodings_from_content(text)
 
     # 获取非中文乱码的文本
-    def get_utf8_content(self, url):
-        req = request.get(url, headers={}, timeout=3)
+    def get_utf8_content(self, url, headers):
+        req = request.get(url, headers, timeout=3)
         encoding = "utf-8"
         if req.encoding == 'ISO-8859-1':
             encodings = request.get_encoding(req.text)
