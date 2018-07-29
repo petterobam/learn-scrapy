@@ -103,6 +103,8 @@ class download():
     # 获取非中文乱码的文本
     def get_utf8_content(self, url, headers):
         req = request.get(url, headers, timeout=3)
+        if req.content == None:
+            return ""
         encoding = "utf-8"
         if req.encoding == 'ISO-8859-1':
             encodings = request.get_encoding(req.text)

@@ -111,6 +111,20 @@ class FileTool(object):
     def isExit(cls, path):
         return os.path.exists(path)
 
+    # 检查文件名是否合理，替换特殊字符
+    @classmethod
+    def replace_invalid_filename(cls, filename, replaced_char='_'):
+        '''
+        替换有特殊字符的文件名中的特殊字符，默认将特殊字符替换为'_'.
+        例如 C/C++ -> C_C++
+        '''
+        valid_filename = filename
+        invalid_characaters = '\\/:*?"<>|'
+        for c in invalid_characaters:
+            #print 'c:', c
+            valid_filename = valid_filename.replace(c, replaced_char)
+        return valid_filename 
+
 
 class DateTool(object):
     #日期格式化工具类，用类执行一个函数，返回一个对象，对象分别有year\month\day

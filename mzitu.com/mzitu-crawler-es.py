@@ -16,7 +16,6 @@ def mzitu_crawler(max_threads=5):
     threads = []
     while True:
         """
-        这儿crawl_queue用上了，就是我们__bool__函数的作用，为真则代表我们MongoDB队列里面还有数据
         threads 或者 crawl_queue为真都代表我们还没下载完成，程序就会继续执行
         """
         for thread in threads:
