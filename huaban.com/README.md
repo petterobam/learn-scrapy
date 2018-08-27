@@ -32,4 +32,12 @@ PS：selenium 安装注意事项
 
 测试结果：
 
-![所有小说图片截图](img/huaban-simple-1.png)
+![图片截图](img/huaban-simple-1.png)
+
+### 简单文本模式
+
+保存画板的里面所有图片信息，包含图片和图片描述
+
+以画板 [淡然小笺赋箴言](http://huaban.com/boards/13448395/) 为例：
+
+![淡然小笺赋箴言](img/huaban-border-txt.png)

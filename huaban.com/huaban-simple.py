@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from selenium import webdriver
 import time
 import os
@@ -19,7 +20,7 @@ class Huaban():
         url = "http://huaban.com"
         # 使用Chrome浏览器模拟打开网页，但是要把下载的chromedriver.exe放在python的文件路径下,
         # 调试好之后换成PhantomJs,速度应该会快一点
-        # driver = webdriver.PhantomJs() 
+        # driver = webdriver.PhantomJs()
         # 下拉滑动浏览器屏幕，具体下拉多少根据自己实际情况决定
         driver = webdriver.PhantomJS()
         #driver = webdriver.Chrome()
@@ -118,7 +119,7 @@ class Huaban():
 
 if __name__ == "__main__":
     content = '迪丽热巴'
-    username = '1460300366@qq.com' # '花瓣账号'
-    password = '111237' # '账号密码'
+    username = '' # '花瓣账号'
+    password = '' # '账号密码'
     huaban = Huaban(username, password)
     huaban.get_picture_url(content)
