@@ -41,3 +41,9 @@ PS：selenium 安装注意事项
 以画板 [淡然小笺赋箴言](http://huaban.com/boards/13448395/) 为例：
 
 ![淡然小笺赋箴言](img/huaban-border-txt.png)
+
+保存画板信息的同时，会在同层目录生成一个单 `index.html` 页面
+
+我将一部分爬取到的信息上传到了该项目里面，点击[这里](http://huaban.com)预览
+
+![预览界面](img/huaban-preview-border.png)

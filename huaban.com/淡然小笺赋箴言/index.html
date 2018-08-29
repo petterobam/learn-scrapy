@@ -1,0 +1,178 @@
+
+    <!DOCTYPE />
+    <html>
+        <head>
+            <meta charset="utf-8" />
+            <title>淡然小笺赋箴言</title>
+            <style>
+                html {
+                    background: #f5f5f5;
+                    --gbshadow-0: 0 none;
+                    --gbshadow-1: 0 1px 3px 0 rgba(0,0,0,.02),0 4px 8px 0 rgba(0,0,0,.02);
+                    --gbshadow-2: 0 1px 3px 0 rgba(0,0,0,.05),0 8px 16px 0 rgba(0,0,0,.07);
+                    --gbshadow-3: 0 1px 3px 0 rgba(0,0,0,.02),0 16px 32px 0 rgba(0,0,0,.07);
+                    --gbshadow-hover: 0 1px 3px rgba(0,0,0,.02),0 16px 32px -4px rgba(0,0,0,.17);
+                }
+                .title{
+                    text-align: center;
+                    width: 700px;
+                    line-height: 30px;
+                    margin: 0 auto;
+                    margin-top: 20px;
+                }
+                .main{
+                    text-align: center;
+                    width: 700px;
+                    height: 700px;
+                    margin: auto;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    box-sizing: border-box;
+                    vertical-align: middle;
+                    overflow: hidden;
+                    background-color: #fff;
+                    border-radius: 3px;
+                    box-shadow: 0 1px 3px rgba(0,0,0,.02), 0 4px 8px rgba(0,0,0,.02);
+                    -webkit-transition: transform .15s ease-in-out,box-shadow .15s ease-in-out;
+                    -moz-box-shadow: 0 1px 3px rgba(0,0,0,.02),0 4px 8px rgba(0,0,0,.02);
+                    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.02), 0 4px 8px rgba(0,0,0,.02);
+                    -webkit-backface-visibility: hidden;
+                }
+                .pre-page{
+                    width: 5%;
+                    height: 100%;
+                    float: left;
+                    box-sizing: border-box;
+                    cursor: pointer;
+                }
+                .pre-page:hover {
+                    background-color: #ddd;
+                }
+                .left-main{
+                    width: 50%;
+                    height: 100%;
+                    float: left;
+                    box-sizing: border-box;
+                    overflow: hidden;
+                    display: -webkit-flex;
+                    display: flex;
+                    -webkit-align-items: center;
+                    align-items: center;
+                    -webkit-justify-content: center;
+                    justify-content: center;
+                }
+                .left-main img{
+                    width: 80%;
+                    border-radius: 3px;
+                }
+                .left-main img:hover {
+                    box-shadow: 0 1px 3px rgba(0,0,0,.02), 0 16px 32px -4px rgba(0,0,0,.17);
+                    transform: translateY(-1px);
+                    cursor: pointer;
+                }
+                .right-main{
+                    width: 40%;
+                    height: 100%;
+                    float: left;
+                    box-sizing: border-box;
+                    display: -webkit-flex;
+                    display: flex;
+                    -webkit-align-items: center;
+                    align-items: center;
+                    -webkit-justify-content: center;
+                    justify-content: center;
+                
+                    line-height: 1.5;
+                    font-family: cursive;
+                    color: #444;
+                    padding: 15px;
+                    margin-bottom: 20px;
+                    word-wrap: break-word;
+                }
+                .next-page{
+                    width: 5%;
+                    height: 100%;
+                    float: right;
+                    box-sizing: border-box;
+                    cursor: pointer;
+                }
+                .next-page:hover {
+                    background-color: #ddd;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="title">
+                淡然小笺赋箴言 - <span id="cur_page">1/40</span>
+            </div>
+            <div class="main">
+                <div class="pre-page" id="pre_page" onclick="prePage();"></div>
+                <div class="left-main">
+                    <img id="curr_img" src="13448395_1.jpg" />
+                </div>
+                <div id="curr_txt" class="right-main">
+                </div>
+                <div class="next-page" id="next_page" onclick="nextPage()"></div>
+            </div>
+            <script type="text/javascript">
+                var cur_page = 1;
+                var max_page = 40;
+                var border_id = "13448395";
+                /*加载当前页*/
+                function updatePage() {
+                    document.getElementById("cur_page").innerHTML = cur_page + "/" + max_page;
+					if(cur_page == 1){
+						document.getElementById("pre_page").style.border="0px";
+					} else {
+						document.getElementById("pre_page").style["border-right"]="1px solid #ddd";
+					}
+					if(cur_page == max_page){
+						document.getElementById("next_page").style.border="0px";
+					} else {
+						document.getElementById("next_page").style["border-left"]="1px solid #ddd";
+					}
+                    document.getElementById("curr_img")["src"] = border_id + "_" + cur_page + ".jpg";
+                    loadText();
+                }
+                /*异步加载文本*/
+                function loadText(){
+                    //创建XMLHttpRequst对象
+                    var xhr = new XMLHttpRequest();
+                    // open(请求方式type,访问文件url/file,是否异步async)
+                    xhr.open('get', border_id + "_" + cur_page + ".txt", true);
+                
+                    //两种请求方式:onload/onreadystatechange
+                    //onload 方式:
+                    xhr.onload = function(){
+                    //输出一下请求返回的文本
+                        document.getElementById("curr_txt").innerHTML = this.responseText;
+                    }
+                    //onreadystatechange  方式
+                    xhr.onreadystatechange = function(){
+                        document.getElementById("curr_txt").innerHTML = this.responseText;
+                    }
+                    xhr.send();
+                }
+                /*上一页*/
+                function prePage() {
+                    if(cur_page > 1) {
+                        cur_page--;
+                        updatePage();
+                    }
+                }
+                /*下一页*/
+                function nextPage() {
+                    if(cur_page < max_page) {
+                        cur_page++;
+                        updatePage();
+                    }
+                }
+                // 加载第一页
+                updatePage();
+            </script>
+        </body>
+    </html>
+    

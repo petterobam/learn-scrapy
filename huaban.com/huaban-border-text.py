@@ -3,6 +3,7 @@ from selenium import webdriver
 import time
 import os
 import requests
+import PreviewHtmlTool
 
 
 class Huaban():
@@ -12,7 +13,7 @@ class Huaban():
 
     # 获取图片和图片文字信息，并存储成文件
     def get_picture_info_by_border_url(self, border_url):
-        url = "http://huaban.com"
+        
         # 使用Chrome浏览器模拟打开网页，但是要把下载的chromedriver.exe放在python的文件路径下,
         # 调试好之后换成PhantomJs,速度应该会快一点
         # driver = webdriver.PhantomJs()
@@ -21,32 +22,36 @@ class Huaban():
         #driver = webdriver.Chrome()
         # 设置全屏
         driver.maximize_window()
-        driver.get(url)
-        time.sleep(8)
 
-        # 点击登录、呼起登录窗口
-        driver.find_elements_by_xpath('//a[@class="login bounce btn wbtn"]')[0].click()
-        # 输入用户名
-        try:
-            driver.find_elements_by_xpath('//input[@name="email"]')[0].send_keys(self.username)
-            print('用户名输入OK!')
-        except:
-            print('用户名输入异常!')
-        time.sleep(3)
-        # 输入密码
-        try:
-            driver.find_elements_by_xpath('//input[@name="password"]')[0].send_keys(self.password)
-            print('密码输入OK!')
-        except:
-            print('密码输入异常!')
-        time.sleep(3)
-        # 点击登陆按钮
-        try:
-            driver.find_elements_by_xpath('//a[@class="btn btn18 rbtn"]')[0].click()
-            print('点击登陆OK!')
-        except:
-            print('点击登陆异常')
-        time.sleep(3)
+        if username != None and len(username) > 0:
+            url = "http://huaban.com"
+            driver.get(url)
+            time.sleep(8)
+
+            # 点击登录、呼起登录窗口
+            driver.find_elements_by_xpath('//a[@class="login bounce btn wbtn"]')[0].click()
+            # 输入用户名
+            try:
+                driver.find_elements_by_xpath('//input[@name="email"]')[0].send_keys(self.username)
+                print('用户名输入OK!')
+            except:
+                print('用户名输入异常!')
+            time.sleep(3)
+            # 输入密码
+            try:
+                driver.find_elements_by_xpath('//input[@name="password"]')[0].send_keys(self.password)
+                print('密码输入OK!')
+            except:
+                print('密码输入异常!')
+            time.sleep(3)
+            # 点击登陆按钮
+            try:
+                driver.find_elements_by_xpath('//a[@class="btn btn18 rbtn"]')[0].click()
+                print('点击登陆OK!')
+            except:
+                print('点击登陆异常')
+            time.sleep(3)
+
         #访问画板，例如 http://huaban.com/boards/13448395/
         driver.get(border_url)
         time.sleep(5)
@@ -58,13 +63,21 @@ class Huaban():
         # 获取画板标题 //div[@id="board_card"]/div[@class="inner"]/div[@class="head-line"]/h1
         content = driver.find_elements_by_xpath('//div[@id="board_card"]/div[@class="inner"]/div[@class="head-line"]/h1')[0].text
         path = "./" + content
-        hash_content = str(hash(content))
+        # hash_content = str(hash(content))
+        # hash_content = border_url[-9:-1]
+        url_split_list = border_url.split("/")
+        hash_content = url_split_list[-2] + url_split_list[-1]
+
         # 保存图片到磁盘文件夹 file_path中，默认为当前脚本运行目录下的文件夹
         if not os.path.exists(path):
             os.makedirs(path)
         #获取图片的总数  //div[@id="board_card"]/div[@class="bar"]/div[@class="tabs"]/a
         pictures_count = driver.find_elements_by_xpath('//div[@id="board_card"]/div[@class="bar"]/div[@class="tabs"]/a')[0].text.replace('采集', '')
         print(pictures_count)
+
+        # 生成预览用的HTML页面
+        PreviewHtmlTool.saveIndexHtmlFile(path + "/index.html", content, hash_content, pictures_count)
+
         pages = int(int(pictures_count) / 20)
         print(pages)
         #匹配到图片url所在的元素
