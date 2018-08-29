@@ -44,6 +44,6 @@ PS：selenium 安装注意事项
 
 保存画板信息的同时，会在同层目录生成一个单 `index.html` 页面
 
-我将一部分爬取到的信息上传到了该项目里面，点击[这里](http://huaban.com)预览
+我将一部分爬取到的信息（40张）上传到了该项目里面，点击[这里](https://petterobam.github.io/my-scrapy/huaban.com/%E6%B7%A1%E7%84%B6%E5%B0%8F%E7%AC%BA%E8%B5%8B%E7%AE%B4%E8%A8%80/index.html)预览
 
 ![预览界面](img/huaban-preview-border.png)
