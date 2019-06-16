@@ -8,3 +8,5 @@ __pycache__/
 *.txt
 *.log
 *.exe
+plugin/*
+.DS_Store

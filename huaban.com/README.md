@@ -20,15 +20,23 @@
 
 PS：selenium 安装注意事项
 
-- 问题1：selenium 已经放弃 PhantomJS，了，建议使用火狐或者谷歌无界面浏览器。
+- 问题1：selenium 已经放弃 PhantomJS 了，建议使用火狐或者谷歌无界面浏览器。
 
     解决方案：selenium 版本降级。
-    通过 `pip show selenium` 显示，默认安装版本为 3.14.0。 
+    通过 `pip show selenium` 显示，默认安装版本为 3.14.0。
     将其卸载 `pip uninstall selenium`，重新安装并指定版本号 `pip install selenium==2.48.0`。 
 
 - 问题2： Unable to start phantomjs with ghostdriver: [WinError 2] 系统找不到指定的文件
 
-    解决方案：下载 phantomjs.exe 到该目录下，或配置 phantomjs.exe 的目录路径到 path 环境变量
+    解决方案：下载 phantomjs 到该目录下，或配置 phantomjs 的目录路径到 path 环境变量
+
+    下载路径 http://phantomjs.org/download.html ，选择对应操作系统下载
+
+- 问题3：使用 chromedrive ，对应下载地址与版本对照表
+
+    下载地址：http://npm.taobao.org/mirrors/chromedriver
+
+    版本对照表：https://blog.csdn.net/yoyocat915/article/details/80580066
 
 测试结果：
 

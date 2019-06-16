@@ -18,12 +18,11 @@ class Huaban():
         if not os.path.exists(path):
             os.makedirs(path)
         url = "http://huaban.com"
-        # 使用Chrome浏览器模拟打开网页，但是要把下载的chromedriver.exe放在python的文件路径下,
-        # 调试好之后换成PhantomJs,速度应该会快一点
+        # 使用Chrome浏览器模拟打开网页，但是要把下载的 chromedriver.exe 放在python的文件路径下,
+        # 调试好之后换成 PhantomJs,速度应该会快一点
         # driver = webdriver.PhantomJs()
-        # 下拉滑动浏览器屏幕，具体下拉多少根据自己实际情况决定
-        driver = webdriver.PhantomJS()
-        #driver = webdriver.Chrome()
+        # driver = webdriver.PhantomJS('../plugin/phantomjs-2.1.1-macosx/bin/phantomjs')
+        driver = webdriver.Chrome('../plugin/chromedriver')
         # 设置全屏
         driver.maximize_window()
         driver.get(url)
@@ -112,14 +111,14 @@ class Huaban():
     #存储图片到本地
     def store(self, picture_url):
         picture = requests.get(picture_url)
-        f = open(path + '\\'+ store_path, 'wb')
+        f = open(os.path.join(path, store_path), 'wb')
         f.write(picture.content)
         print('正在保存图片：' + picture_url)
         print('文件：' + name)
 
 if __name__ == "__main__":
-    content = '迪丽热巴'
-    username = '' # '花瓣账号'
-    password = '' # '账号密码'
+    content = '赵丽颖'
+    username = input('请输入花瓣账号名：') # '花瓣账号'
+    password = input('请输入账号对应密码：') # '账号密码'
     huaban = Huaban(username, password)
     huaban.get_picture_url(content)

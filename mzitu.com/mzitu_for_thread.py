@@ -60,7 +60,11 @@ class MzituThread(object):
             html = self.request(href)
             self.headers['referer'] = href
             ## max_span = BeautifulSoup(html.text, 'lxml').find('div', class_='pagenavi').find_all('span')[-2].get_text()
-            max_span = BeautifulSoup(html.text, 'lxml').find_all('span')[10].get_text()
+            # max_span = BeautifulSoup(html.text, 'lxml').find_all('span')[10].get_text()
+            max_span = 100
+            pageDiv = BeautifulSoup(html.text, 'lxml').find('div', class_='pagenavi')
+            if len(pageDiv) > 1:
+                max_span = pageDiv.find_all('span')[-2].get_text()
             for page in range(1, int(max_span) + 1):
                 page_url = href + '/' + str(page)
                 self.img(page_url, data) ##调用img函数

@@ -17,9 +17,8 @@ class Huaban():
         # 使用Chrome浏览器模拟打开网页，但是要把下载的chromedriver.exe放在python的文件路径下,
         # 调试好之后换成PhantomJs,速度应该会快一点
         # driver = webdriver.PhantomJs()
-        # 下拉滑动浏览器屏幕，具体下拉多少根据自己实际情况决定
-        driver = webdriver.PhantomJS()
-        #driver = webdriver.Chrome()
+        # driver = webdriver.PhantomJS('../plugin/phantomjs-2.1.1-macosx/bin/phantomjs')
+        driver = webdriver.Chrome('../plugin/chromedriver')
         # 设置全屏
         driver.maximize_window()
 
@@ -135,8 +134,8 @@ class Huaban():
         print(f'文件：{pic_path}.txt')
 
 if __name__ == "__main__":
-    username = '' # '花瓣账号'
-    password = '' # '账号密码'
+    username = input('请输入花瓣账号名：') # '花瓣账号'
+    password = input('请输入账号对应密码：') # '账号密码'
     huaban = Huaban(username, password)
     #获取画板图片信息[淡然小笺赋箴言] http://huaban.com/boards/13448395/
     border_url = 'http://huaban.com/boards/13448395/'

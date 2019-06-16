@@ -4,6 +4,10 @@ def saveIndexHtmlFile(save_path, title, border_id, max_page):
     <!DOCTYPE />
     <html>
         <head>
+            <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+            <meta http-equiv="Access-Control-Allow-Credentials" content="true" />
+            <meta http-equiv="Access-Control-Allow-Methods" content="get" />
+            <meta http-equiv="Access-Control-Allow-Headers" content="x-requested-with, x-ui-request, lang" />
             <meta charset="utf-8" />
             <title>%(title)s</title>
             <style>

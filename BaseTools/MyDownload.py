@@ -10,7 +10,7 @@ class download():
     def __init__(self):
         self.iplist = []  ##初始化一个list用来存放我们获取到的IP
         # self.get_ip_list()
-        self.get_ip_list2()
+        self.get_ip_list3()
         print(self.iplist)
         self.user_agent_list = [
             "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
@@ -60,6 +60,24 @@ class download():
                     # print('tds[8]为：'+str(tds[8]))
                     self.iplist.append(tds[1].text + ':' + tds[2].text)
                     # print(tds[1].text + ':' + tds[2].text)
+    
+    #功能：爬取IP存入ip_list列表
+    def get_ip_list3(self):
+        web_data = requests.get("https://www.kuaidaili.com/free/", headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'})
+        soup = BeautifulSoup(web_data.text, 'lxml')
+        ips = soup.find_all('tr')
+        for i in range(1, len(ips)):
+            ip_info = ips[i]
+            tds = ip_info.find_all('td')
+            currIp = ''
+            if len(tds) > 1:
+                for item in tds:
+                    if item["data-title"] == 'IP':
+                        currIp = item.text
+                    if item["data-title"] == 'PORT':
+                        currIp += ':' + item.text
+                        break
+                self.iplist.append(currIp)
 
     def get(self, url, headers, timeout, proxy=None, num_retries=10): ##给函数一个默认参数proxy为空
         UA = random.choice(self.user_agent_list) ##从self.user_agent_list中随机取出一个字符串

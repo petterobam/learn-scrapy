@@ -28,11 +28,13 @@ class jjwxk_free_simple():
         self.readFinishCountInfo()
 
     # 抓取入口:默认 http://www.jjwxc.net/bookbase_slave.php?booktype=free
-    def free_list(self, url="http://www.jjwxc.net/bookbase_slave.php?booktype=free"):
+    def free_list(self, limitPage=1, url="http://www.jjwxc.net/bookbase_slave.php?booktype=free"):
         html_content = self.request_content(url)  ##调用request_content返回html文本给我们
         FileTool.write_behind(self.basePageFilePath, url)
         html_ele = BeautifulSoup(html_content, 'lxml')
         self.globalPageCount = self.globalPageCount + 1
+        if self.globalPageCount > limitPage:
+            return
 
         if self.globalPageCount >= self.pageCount:
             # 如果当前页码比记录的页码大，行数从第一行开始记录，否则就当前页码记录
@@ -77,7 +79,7 @@ class jjwxk_free_simple():
         # time.sleep(1)
         self.headers['Referer'] = url
         # 继续拉取下一页
-        self.free_list(page_next)
+        self.free_list(limitPage, page_next)
 
     # 从保存的书籍链接记录里面抓取每一本书的内容
     def book_list(self):
@@ -205,7 +207,7 @@ class jjwxk_free_simple():
 
 
 jjwxk = jjwxk_free_simple()
-# jjwxk.free_list()
+jjwxk.free_list()
 # while jjwxk.globalPageCount < 10000:
 #     try:
 #         jjwxk.free_list()
