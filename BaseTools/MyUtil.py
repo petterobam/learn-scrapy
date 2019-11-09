@@ -3,6 +3,7 @@ import random,string
 from hashlib import md5
 import os
 import codecs
+import tomd
 
 class MyStr():
     @classmethod
@@ -32,6 +33,11 @@ class MyStr():
         if length < 32:
             res = random.sample(res, length) #从字母和数字中随机取3位
         return res
+    
+    @classmethod
+    def html2markdown(cls, html):
+        mdTxt = tomd.Tomd(html).markdown
+        return mdTxt
 
 class FileTool(object):
     #追加写入：写一个写入数据的接口

@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
 class EditDistance():
-
     @classmethod
     def minEditDist(cls, sm, sn):
         '''

@@ -7,6 +7,7 @@ __pycache__/
 *.wpr
 *.txt
 *.log
+*.json
 *.exe
 plugin/*
 .DS_Store

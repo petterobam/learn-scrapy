@@ -12,7 +12,7 @@ class BaseScrapyItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     url = scrapy.Field()
-    head = scrapy.Field()
-    content = scrapy.Field()
-    time = scrapy.Field()
+    status = scrapy.Field()
+    # headers = scrapy.Field()
+    body = scrapy.Field()
     pass
